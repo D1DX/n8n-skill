@@ -1,0 +1,3 @@
+[submodule "czlonkowski"]
+	path = czlonkowski
+	url = https://github.com/czlonkowski/n8n-skills.git
