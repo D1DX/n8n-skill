@@ -82,7 +82,7 @@ Source: `credentials.handler.ts` — calls `CredentialsHelper.getCredentialsProp
 ```json
 {
   "credentials": {
-    "supabaseApi": { "id": "R7Furz3UMt8vvI2Q", "name": "Supabase account" }
+    "supabaseApi": { "id": "YOUR_CREDENTIAL_ID", "name": "Supabase account" }
   }
 }
 ```
