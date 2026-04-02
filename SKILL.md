@@ -2,7 +2,7 @@
 name: n8n
 description: Complete n8n skill — workflow building, node configuration, JavaScript/Python code nodes, expression syntax, validation, MCP tools, credentials, administration, Docker deployment, backup/restore, internal API, and troubleshooting. Auto-triggers on any n8n task including workflow creation, node configuration, code nodes, expressions, validation errors, credential management, instance administration, n8n setup, n8n upgrade, n8n backup, and n8n API usage.
 disable-model-invocation: false
-user-invokable: true
+user-invocable: true
 argument-hint: "n8n task description"
 ---
 
