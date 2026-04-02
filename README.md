@@ -1,11 +1,11 @@
-# n8n Skill for Claude Code
+# n8n Skill
 
 [![Author](https://img.shields.io/badge/Author-Daniel_Rudaev-000000?style=flat)](https://github.com/daniel-rudaev)
 [![Studio](https://img.shields.io/badge/Studio-D1DX-000000?style=flat)](https://d1dx.com)
 [![n8n](https://img.shields.io/badge/n8n-Skill-EA4B71?style=flat&logo=n8n&logoColor=white)](https://n8n.io)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](./LICENSE)
 
-Complete n8n skill for Claude Code. 9 domains covering workflow building, node configuration, code nodes, expression syntax, validation, MCP tools, credentials, administration, and data tables. Built from n8n source code and production workflows at [D1DX](https://d1dx.com).
+Complete n8n skill for AI agents. 9 domains covering workflow building, node configuration, code nodes, expression syntax, validation, MCP tools, credentials, administration, and data tables. Built from n8n source code and production workflows at [D1DX](https://d1dx.com).
 
 Extends [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) with source-code-verified credential management, internal API reference, data tables, folder management, and a unified entry point.
 
@@ -25,27 +25,26 @@ Extends [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) with
 
 ## Install
 
-### Claude Code (CLI or IDE)
-
-Copy the skill folder to your Claude Code skills directory:
+### Claude Code
 
 ```bash
-# Clone with submodule
 git clone --recursive https://github.com/D1DX/n8n-skill.git
-
-# Copy to Claude Code skills
 cp -r n8n-skill ~/.claude/skills/n8n
 ```
 
-Or add as a git submodule in your own skills repo:
+Or as a git submodule:
 
 ```bash
 git submodule add https://github.com/D1DX/n8n-skill.git path/to/skills/n8n
 ```
 
+### Other AI Agents
+
+Copy `SKILL.md` (and subfolders) into your agent's prompt or knowledge directory. The skill is structured markdown — works with any LLM agent that reads reference files.
+
 ### Verify
 
-Start a new Claude Code session. The skill should appear in the skill list as `n8n`. Test with `/n8n` or ask any n8n-related question.
+Start a new session. The skill should appear as `n8n`.
 
 ## Recommended: n8n MCP Server
 
@@ -80,7 +79,7 @@ n8n-skill/
 
 ## Method Priority
 
-The skill teaches Claude when to use each method:
+The skill teaches when to use each method:
 
 | Priority | Method | Use for |
 |----------|--------|---------|
