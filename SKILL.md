@@ -12,9 +12,22 @@ Complete skill for building, managing, and administering n8n workflows.
 
 ---
 
+## Before Building Any Workflow
+
+Search the **[Workflow Vector DB](workflow-vectordb/REFERENCE.md)** first. It indexes 6,902 real n8n workflows — find a similar one, study its structure, and use it as a reference instead of building from scratch.
+
+```bash
+cd workflow-vectordb
+python search.py "describe what you want to build"
+```
+
+See [workflow-vectordb/REFERENCE.md](workflow-vectordb/REFERENCE.md) for setup and full usage.
+
+---
+
 ## How to Use This Skill
 
-This skill covers 9 domains. Each has its own reference file with detailed guidance.
+This skill covers 9 domains plus the workflow vector DB. Each has its own reference file with detailed guidance.
 
 ### Workflow Building (from [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills))
 
@@ -32,6 +45,7 @@ This skill covers 9 domains. Each has its own reference file with detailed guida
 
 | Domain | Reference | When to use |
 |--------|-----------|-------------|
+| **Workflow Vector DB** | [workflow-vectordb/REFERENCE.md](workflow-vectordb/REFERENCE.md) | Finding real workflow examples before building. Semantic search over 6,902 workflows by natural language description. |
 | **Credentials** | [credentials/SKILL.md](credentials/SKILL.md) | Credential types, REST API credential CRUD, HTTP Request auth modes, httpCustomAuth JSON format, predefinedCredentialType vs genericCredentialType |
 | **Administration** | [administration/SKILL.md](administration/SKILL.md) | Instance operations the MCP doesn't cover — Docker, backup/restore, CLI commands, internal API, community packages, SSO, upgrades, troubleshooting |
 
@@ -41,6 +55,7 @@ This skill covers 9 domains. Each has its own reference file with detailed guida
 
 | You want to... | Tool |
 |----------------|------|
+| Find similar workflows as reference | [Workflow Vector DB](workflow-vectordb/REFERENCE.md) (`python search.py "..."`) |
 | Create/edit/delete workflows | MCP (`n8n_create_workflow`, `n8n_update_partial_workflow`) |
 | Search nodes, get schema | MCP (`search_nodes`, `get_node`) |
 | Validate workflow or node | MCP (`n8n_validate_workflow`, `validate_node`) |
