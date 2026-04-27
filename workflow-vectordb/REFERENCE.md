@@ -1,5 +1,7 @@
 # Workflow Vector DB
 
+*Contributed by Asaf Lecht ([@Seithx](https://github.com/Seithx))*
+
 **Don't build n8n workflows from scratch.** Search 6,902 real workflows by describing what you need, find the closest match, study its structure, and use it as your starting point.
 
 ```bash
