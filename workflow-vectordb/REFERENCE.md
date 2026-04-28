@@ -35,6 +35,9 @@ python ingest.py --from-summaries summaries.jsonl
 python search.py "what you want to build"
 ```
 
+> **Already have an OpenAI key and don't want to sign up for Voyage?**
+> See [OpenAI alternative](#openai-alternative-provider) below — same scripts, set `EMBEDDINGS_PROVIDER=openai` in `.env` and use `OPENAI_API_KEY`.
+
 ### Full Setup (with downloadable workflow JSONs, ~90 minutes)
 
 Downloads the actual workflow files so you can read the full JSON after matching.
@@ -60,6 +63,35 @@ python ingest.py
 # Search
 python search.py "describe what you want to build"
 ```
+
+### OpenAI alternative provider
+
+If you already have an OpenAI key and don't want to sign up for Voyage, set the provider to `openai`. Same scripts, different embedding backend:
+
+```bash
+cd workflow-vectordb
+pip install chromadb openai python-dotenv
+cp .env.example .env
+# In .env, set:
+#   EMBEDDINGS_PROVIDER=openai
+#   OPENAI_API_KEY=sk-...
+python ingest.py --from-summaries summaries.jsonl
+python search.py "what you want to build"
+```
+
+**Trade-offs vs the default Voyage path:**
+
+| | Voyage (default) | OpenAI |
+|---|---|---|
+| Embedding model | `voyage-code-3` (code-tuned) | `text-embedding-3-small` (general; `-large` available via `OPENAI_EMBEDDING_MODEL`) |
+| Reranking | `rerank-2.5-lite` cross-encoder, top_k from 4× overfetch | None — falls back to vector-distance ordering |
+| Free tier | 200M tokens (full DB ≈ 2M) | None — pay-as-you-go |
+| One-time ingest cost | $0 | ~$0.04 (`small`) / ~$0.20 (`large`) |
+| Per-query cost | $0 | ~$0.0001 |
+
+For "find a similar workflow as a reference" the practical impact is small — OpenAI's distance-only ranking still surfaces the right cluster of workflows; you may see slightly different ordering inside the top 3. Use `text-embedding-3-large` to close most of the embedding-quality gap.
+
+`embeddings.py` selects the provider via the `EMBEDDINGS_PROVIDER` env var (`voyage` | `openai`) and lazy-imports the corresponding SDK, so you only need to install the one you use.
 
 ---
 
@@ -162,7 +194,8 @@ Tested across 15 diverse queries with reranking enabled:
 ## Dependencies
 
 - **chromadb** -- Local vector database. No server, no Docker. Stores everything in a `chroma_db/` folder.
-- **voyageai** -- Embedding (`voyage-code-3`) and reranking (`rerank-2.5-lite`). Free tier: 200M tokens. Full DB uses ~2M tokens.
+- **voyageai** -- Default embeddings provider. `voyage-code-3` for embeddings + `rerank-2.5-lite` for reranking. Free tier: 200M tokens. Full DB uses ~2M tokens.
+- **openai** -- Optional alternative embeddings provider, selected via `EMBEDDINGS_PROVIDER=openai`. No native reranker. Install whichever provider SDK you'll actually use — they're imported lazily.
 - **python-dotenv** -- Load API key from `.env` file.
 
 ## Files

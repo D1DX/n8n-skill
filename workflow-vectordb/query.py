@@ -12,25 +12,26 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 import chromadb
-import voyageai
 from dotenv import load_dotenv
 
 load_dotenv()
 
-VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY")
+import embeddings as embeddings_mod  # noqa: E402
+
 CHROMA_PATH = "./chroma_db"
 COLLECTION_NAME = "n8n_workflows"
 OVERFETCH = 4
 
 
 def search_workflows(query: str, n_results: int = 3, show_json: bool = False, rerank: bool = True):
-    vo = voyageai.Client(api_key=VOYAGE_API_KEY)
+    provider = embeddings_mod.get()
     client = chromadb.PersistentClient(path=CHROMA_PATH)
     collection = client.get_collection(COLLECTION_NAME)
 
-    print(f"Searching {collection.count()} workflows for: \"{query}\"\n")
+    print(f"Searching {collection.count()} workflows for: \"{query}\" "
+          f"[{embeddings_mod.describe()}]\n")
 
-    embedding = vo.embed([query], model="voyage-code-3", input_type="query").embeddings[0]
+    embedding = provider.embed_query(query)
     fetch_n = n_results * OVERFETCH if rerank else n_results
     results = collection.query(query_embeddings=[embedding], n_results=fetch_n, include=["documents", "metadatas", "distances"])
 
@@ -41,13 +42,16 @@ def search_workflows(query: str, n_results: int = 3, show_json: bool = False, re
 
     if rerank and documents:
         try:
-            rr = vo.rerank(query=query, documents=documents, model="rerank-2.5-lite", top_k=n_results, truncation=True)
-            reranked = [(rr_item.index, rr_item.relevance_score) for rr_item in rr.results]
-            ids = [ids[idx] for idx, _ in reranked]
-            documents = [documents[idx] for idx, _ in reranked]
-            metadatas = [metadatas[idx] for idx, _ in reranked]
-            scores = [s for _, s in reranked]
-            print(f"(reranked {fetch_n} -> {len(ids)} results)\n")
+            reranked = provider.rerank(query=query, documents=documents, top_k=n_results)
+            if reranked is None:
+                print(f"(provider has no reranker — using vector distance ordering)\n")
+                ids, documents, metadatas, scores = ids[:n_results], documents[:n_results], metadatas[:n_results], scores[:n_results]
+            else:
+                ids = [ids[idx] for idx, _ in reranked]
+                documents = [documents[idx] for idx, _ in reranked]
+                metadatas = [metadatas[idx] for idx, _ in reranked]
+                scores = [s for _, s in reranked]
+                print(f"(reranked {fetch_n} -> {len(ids)} results)\n")
         except Exception as e:
             print(f"[WARNING] Rerank failed: {e}\n")
             ids, documents, metadatas, scores = ids[:n_results], documents[:n_results], metadatas[:n_results], scores[:n_results]

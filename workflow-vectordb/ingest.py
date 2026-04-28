@@ -1,4 +1,7 @@
-"""Ingest n8n workflow JSONs into ChromaDB with Voyage AI embeddings.
+"""Ingest n8n workflow JSONs into ChromaDB.
+
+Embeddings provider is selected via EMBEDDINGS_PROVIDER env var
+(voyage default, openai alternative). See embeddings.py for details.
 
 Two modes:
   1. From workflow JSON files (repos/ directory):
@@ -8,7 +11,6 @@ Two modes:
      python ingest.py --from-summaries summaries.jsonl
 
 Mode 2 skips JSON parsing and uses pre-extracted summaries.
-Both modes require VOYAGE_API_KEY for embedding.
 """
 import json
 import os
@@ -19,15 +21,11 @@ import time
 from pathlib import Path
 
 import chromadb
-import voyageai
 from dotenv import load_dotenv
 
 load_dotenv()
 
-VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY")
-if not VOYAGE_API_KEY:
-    print("[ERROR] VOYAGE_API_KEY not set in .env")
-    sys.exit(1)
+import embeddings as embeddings_mod  # noqa: E402  (after load_dotenv so env vars are visible)
 
 CHROMA_PATH = "./chroma_db"
 COLLECTION_NAME = "n8n_workflows"
@@ -318,8 +316,8 @@ def main():
         sys.exit(1)
 
     # Embed
-    print(f"\nEmbedding {len(workflows)} summaries with voyage-code-3...")
-    vo = voyageai.Client(api_key=VOYAGE_API_KEY)
+    provider = embeddings_mod.get()
+    print(f"\nEmbedding {len(workflows)} summaries with {embeddings_mod.describe()}...")
     all_embeddings = []
     total_batches = (len(workflows) + BATCH_SIZE - 1) // BATCH_SIZE
 
@@ -327,13 +325,11 @@ def main():
         batch = workflows[i:i + BATCH_SIZE]
         summaries = [w["summary"] for w in batch]
         try:
-            result = vo.embed(summaries, model="voyage-code-3", input_type="document")
-            all_embeddings.extend(result.embeddings)
+            all_embeddings.extend(provider.embed_documents(summaries))
         except Exception as e:
             print(f"  [ERROR] Batch failed: {e}, retrying in 5s...")
             time.sleep(5)
-            result = vo.embed(summaries, model="voyage-code-3", input_type="document")
-            all_embeddings.extend(result.embeddings)
+            all_embeddings.extend(provider.embed_documents(summaries))
         done = min(i + BATCH_SIZE, len(workflows))
         batch_num = (i // BATCH_SIZE) + 1
         print(f"  Batch {batch_num}/{total_batches} - {done}/{len(workflows)}")

@@ -1,4 +1,6 @@
 .env
+.env.template
+.venv/
 chroma_db/
 repos/
 __pycache__/

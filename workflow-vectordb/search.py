@@ -13,22 +13,22 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 import chromadb
-import voyageai
 from dotenv import load_dotenv
 
 load_dotenv()
 
-VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY")
+import embeddings as embeddings_mod  # noqa: E402
+
 CHROMA_PATH = "./chroma_db"
 COLLECTION_NAME = "n8n_workflows"
 
 
 def search(query: str, n: int = 3) -> list[dict]:
-    vo = voyageai.Client(api_key=VOYAGE_API_KEY)
+    provider = embeddings_mod.get()
     client = chromadb.PersistentClient(path=CHROMA_PATH)
     collection = client.get_collection(COLLECTION_NAME)
 
-    embedding = vo.embed([query], model="voyage-code-3", input_type="query").embeddings[0]
+    embedding = provider.embed_query(query)
     results = collection.query(
         query_embeddings=[embedding], n_results=n * 4,
         include=["documents", "metadatas", "distances"],
@@ -37,14 +37,16 @@ def search(query: str, n: int = 3) -> list[dict]:
     docs = results["documents"][0]
     metas = results["metadatas"][0]
     try:
-        rr = vo.rerank(query=query, documents=docs, model="rerank-2.5-lite", top_k=n, truncation=True)
-        return [{"score": round(r.relevance_score, 3), "name": metas[r.index]["name"],
-                 "nodes": metas[r.index]["node_count"], "source": metas[r.index]["source"],
-                 "path": metas[r.index]["json_path"]} for r in rr.results]
+        reranked = provider.rerank(query=query, documents=docs, top_k=n)
+        if reranked is not None:
+            return [{"score": round(score, 3), "name": metas[idx]["name"],
+                     "nodes": metas[idx]["node_count"], "source": metas[idx]["source"],
+                     "path": metas[idx]["json_path"]} for idx, score in reranked]
     except Exception:
-        return [{"score": round(max(0, 1 - results["distances"][0][i]), 3), "name": metas[i]["name"],
-                 "nodes": metas[i]["node_count"], "source": metas[i]["source"],
-                 "path": metas[i]["json_path"]} for i in range(min(n, len(metas)))]
+        pass
+    return [{"score": round(max(0, 1 - results["distances"][0][i]), 3), "name": metas[i]["name"],
+             "nodes": metas[i]["node_count"], "source": metas[i]["source"],
+             "path": metas[i]["json_path"]} for i in range(min(n, len(metas)))]
 
 
 if __name__ == "__main__":

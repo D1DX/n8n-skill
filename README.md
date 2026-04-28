@@ -110,7 +110,7 @@ git commit -m "chore: update n8n-skills submodule"
 
 ## Sources
 
-- **Workflow Vector DB:** 6,902 workflows from [Danitilahun/n8n-workflow-templates](https://github.com/Danitilahun/n8n-workflow-templates), [enescingoz/awesome-n8n-templates](https://github.com/enescingoz/awesome-n8n-templates), and the n8n.io template API. Embeddings via Voyage AI voyage-code-3.
+- **Workflow Vector DB:** 6,902 workflows from [Danitilahun/n8n-workflow-templates](https://github.com/Danitilahun/n8n-workflow-templates), [enescingoz/awesome-n8n-templates](https://github.com/enescingoz/awesome-n8n-templates), and the n8n.io template API. Embeddings via Voyage AI `voyage-code-3` (default) or OpenAI `text-embedding-3-small` (alternative, opt-in via `EMBEDDINGS_PROVIDER=openai`).
 - **Credentials and Administration:** Verified against [n8n-io/n8n](https://github.com/n8n-io/n8n) source code (`master` branch, March 2026). Controllers read: `credentials.controller.ts`, `credentials-tester.service.ts`, `data-table.controller.ts`, `folder.controller.ts`, `community-packages.controller.ts`, `oauth2-credential.controller.ts`.
 - **Workflow building domains:** [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) (MIT License).
 
