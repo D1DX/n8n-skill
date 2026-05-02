@@ -1,9 +1,0 @@
-chromadb>=1.0.0
-python-dotenv>=1.0.0
-
-# Pick ONE provider (or both if you want to switch via EMBEDDINGS_PROVIDER):
-# - voyageai: default. Code-tuned embeddings + cross-encoder reranker. Free tier 200M tokens.
-# - openai:   alternative. Use if you already have an OpenAI key. No native reranker;
-#             callers fall back to vector-distance ordering.
-voyageai>=0.3.0
-openai>=1.0.0

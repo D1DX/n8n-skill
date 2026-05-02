@@ -5,7 +5,7 @@
 [![n8n](https://img.shields.io/badge/n8n-Skill-EA4B71?style=flat&logo=n8n&logoColor=white)](https://n8n.io)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](./LICENSE)
 
-Complete n8n skill for AI agents. 9 domains plus a workflow vector DB — covering workflow building, node configuration, code nodes, expression syntax, validation, MCP tools, credentials, administration, and data tables. Includes semantic search over 6,902 real n8n workflows so you can find a reference before building from scratch. Built from n8n source code and production workflows at [D1DX](https://d1dx.com).
+Complete n8n skill for AI agents. 9 domains covering workflow building, node configuration, code nodes, expression syntax, validation, MCP tools, credentials, administration, and data tables. Built from n8n source code and production workflows at [D1DX](https://d1dx.com).
 
 Extends [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) with source-code-verified credential management, internal API reference, data tables, folder management, and a unified entry point.
 
@@ -13,7 +13,6 @@ Extends [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) with
 
 | Domain | Source | What it covers |
 |--------|--------|---------------|
-| **Workflow Vector DB** | D1DX | Semantic search over 6,902 real n8n workflows. Find a reference before building from scratch. |
 | Workflow Patterns | czlonkowski | 5 architectural patterns — webhook, HTTP API, database, AI agent, scheduled |
 | Node Configuration | czlonkowski | Operation-aware config, property dependencies, required fields |
 | Code — JavaScript | czlonkowski | `$input/$json/$node` syntax, `$helpers.httpRequest()`, DateTime, error patterns |
@@ -63,12 +62,6 @@ Compatible MCP servers:
 ```
 n8n-skill/
 ├── SKILL.md              — Unified entry point (auto-triggers on n8n tasks)
-├── workflow-vectordb/
-│   ├── REFERENCE.md      — Setup, usage, search quality benchmarks
-│   ├── search.py         — Compact search (terminal or AI assistant)
-│   ├── query.py          — Full search with --json and reranking
-│   ├── ingest.py         — Build ChromaDB from repos or summaries
-│   └── summaries.jsonl   — 6,902 pre-extracted summaries
 ├── credentials/
 │   └── SKILL.md          — Credential types, testing, OAuth, httpCustomAuth
 ├── administration/
@@ -90,7 +83,6 @@ The skill teaches when to use each method:
 
 | Priority | Method | Use for |
 |----------|--------|---------|
-| 0 | Workflow Vector DB | Find a real reference workflow before building |
 | 1 | MCP | Workflow CRUD, node search, validation, templates, executions |
 | 2 | Public REST API | Credential CRUD, tags, variables, data table rows |
 | 3 | Internal API | Credential testing, folders, community packages, column CRUD |
@@ -110,13 +102,12 @@ git commit -m "chore: update n8n-skills submodule"
 
 ## Sources
 
-- **Workflow Vector DB:** 6,902 workflows from [Danitilahun/n8n-workflow-templates](https://github.com/Danitilahun/n8n-workflow-templates), [enescingoz/awesome-n8n-templates](https://github.com/enescingoz/awesome-n8n-templates), and the n8n.io template API. Embeddings via Voyage AI `voyage-code-3` (default) or OpenAI `text-embedding-3-small` (alternative, opt-in via `EMBEDDINGS_PROVIDER=openai`).
 - **Credentials and Administration:** Verified against [n8n-io/n8n](https://github.com/n8n-io/n8n) source code (`master` branch, March 2026). Controllers read: `credentials.controller.ts`, `credentials-tester.service.ts`, `data-table.controller.ts`, `folder.controller.ts`, `community-packages.controller.ts`, `oauth2-credential.controller.ts`.
 - **Workflow building domains:** [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) (MIT License).
 
 ## Credits
 
-Workflow building skills by [Maciej Czlonkowski](https://github.com/czlonkowski/n8n-skills). Credentials, administration, and unified skill by [D1DX](https://github.com/D1DX). Workflow vector DB by [Asaf Lecht](https://github.com/Seithx).
+Workflow building skills by [Maciej Czlonkowski](https://github.com/czlonkowski/n8n-skills). Credentials, administration, and unified skill by [D1DX](https://github.com/D1DX).
 
 ## License
 
