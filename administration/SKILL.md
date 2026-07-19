@@ -1,13 +1,14 @@
 ---
 name: administration
 description: n8n instance administration — data tables, folder management, community packages, Docker deployment, environment variables, backup/restore, upgrades, CLI commands, and troubleshooting. Operations the MCP does NOT cover. Auto-triggers on n8n data tables, n8n folders, move workflow, community packages, n8n setup, n8n upgrade, n8n backup, and n8n instance management tasks.
+user-invokable: true
 ---
 
 # n8n Administration
 
 Operations the MCP and public API don't fully cover: data tables, folders, community packages, infrastructure, backup, CLI.
 
-**Source: n8n-io/n8n GitHub repo, master branch. Verified 2026-03-30.**
+**Source: n8n-io/n8n GitHub repo, master branch.**
 
 ---
 

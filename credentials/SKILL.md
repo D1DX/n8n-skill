@@ -2,7 +2,7 @@
 name: credentials
 description: n8n credential types, REST API credential management, HTTP Request node authentication, predefinedCredentialType vs genericCredentialType, httpCustomAuth JSON format, credential creation via API, credential testing, credential type discovery, OAuth flows, and service-specific credential schemas. Auto-triggers on n8n credential, httpCustomAuth, predefinedCredentialType, genericCredentialType, credential API, credential test, OAuth, and HTTP Request auth tasks.
 disable-model-invocation: false
-user-invocable: true
+user-invokable: true
 argument-hint: "credential task"
 ---
 
@@ -10,7 +10,7 @@ argument-hint: "credential task"
 
 Credential types, REST API management, testing, type discovery, OAuth flows, and HTTP Request node authentication.
 
-**Source: n8n-io/n8n GitHub repo, master branch. Verified 2026-03-30.**
+**Source: n8n-io/n8n GitHub repo, master branch.**
 
 ---
 

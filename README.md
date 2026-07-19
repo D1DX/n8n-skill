@@ -102,7 +102,7 @@ git commit -m "chore: update n8n-skills submodule"
 
 ## Sources
 
-- **Credentials and Administration:** Verified against [n8n-io/n8n](https://github.com/n8n-io/n8n) source code (`master` branch, March 2026). Controllers read: `credentials.controller.ts`, `credentials-tester.service.ts`, `data-table.controller.ts`, `folder.controller.ts`, `community-packages.controller.ts`, `oauth2-credential.controller.ts`.
+- **Credentials and Administration:** Verified against [n8n-io/n8n](https://github.com/n8n-io/n8n) source code (`master` branch). Controllers read: `credentials.controller.ts`, `credentials-tester.service.ts`, `data-table.controller.ts`, `folder.controller.ts`, `community-packages.controller.ts`, `oauth2-credential.controller.ts`.
 - **Workflow building domains:** [czlonkowski/n8n-skills](https://github.com/czlonkowski/n8n-skills) (MIT License).
 
 ## Credits
